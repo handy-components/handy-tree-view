@@ -1,10 +1,9 @@
-# StudioTreeView
+# HandyTreeView
 
-A fully custom tree view component that provides RichTreeViewPro-compatible API without external dependencies. Built specifically for OLangStudio with full control over behavior and features.
+A fully custom tree view component.
 
 ## Features
 
-- ✅ **RichTreeViewPro-compatible API** - Drop-in replacement for RichTreeViewPro
 - ✅ **Lazy Loading** - Support for `dataSource` and `dataSourceCache`
 - ✅ **Multi-Selection** - Single and multi-selection with checkbox support
 - ✅ **Controlled/Uncontrolled** - Both expansion and selection modes
@@ -18,7 +17,7 @@ A fully custom tree view component that provides RichTreeViewPro-compatible API 
 - ✅ **Performance** - Memoization, virtual scrolling support, efficient re-rendering
 - ✅ **Custom Styling** - Material-UI theme integration
 - ✅ **Programmatic Control** - API ref for programmatic manipulation
-- ✅ **RichTreeViewPlus Features** - Custom filtering, hidden files control, custom empty states, ItemDataContext, onItemExpansion callback
+- ✅ **Advanced Features** - Custom filtering, hidden files control, custom empty states, ItemDataContext, onItemExpansion callback
 
 ## Installation
 
@@ -27,17 +26,7 @@ npm install @handy-components/handy-tree-view
 ```
 
 ```typescript
-import { StudioTreeView } from '@handy-components/handy-tree-view';
-```
-
-**Note**: This package is currently private. For local development, use a file dependency:
-
-```json
-{
-  "dependencies": {
-    "@handy-components/handy-tree-view": "file:../handy-tree-view"
-  }
-}
+import { HandyTreeView } from '@handy-components/handy-tree-view';
 ```
 
 ## Basic Usage
@@ -45,7 +34,7 @@ import { StudioTreeView } from '@handy-components/handy-tree-view';
 ### Static Tree
 
 ```tsx
-import { StudioTreeView } from '@handy-components/handy-tree-view';
+import { HandyTreeView } from '@handy-components/handy-tree-view';
 
 const items = [
   {
@@ -65,7 +54,7 @@ const items = [
   },
 ];
 
-<StudioTreeView items={items} />
+<HandyTreeView items={items} />
 ```
 
 ### Controlled Expansion
@@ -73,7 +62,7 @@ const items = [
 ```tsx
 const [expandedItems, setExpandedItems] = useState<string[]>(['1']);
 
-<StudioTreeView
+<HandyTreeView
   items={items}
   expandedItems={expandedItems}
   onExpandedItemsChange={(event, itemIds) => {
@@ -87,7 +76,7 @@ const [expandedItems, setExpandedItems] = useState<string[]>(['1']);
 ```tsx
 const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
-<StudioTreeView
+<HandyTreeView
   items={items}
   multiSelect
   checkboxSelection
@@ -101,9 +90,9 @@ const [selectedItems, setSelectedItems] = useState<string[]>([]);
 ### Using API Ref
 
 ```tsx
-const apiRef = useRef<StudioTreeViewApiRef>({ current: undefined });
+const apiRef = useRef<HandyTreeViewApiRef>({ current: undefined });
 
-<StudioTreeView items={items} apiRef={apiRef} />
+<HandyTreeView items={items} apiRef={apiRef} />
 
 // Programmatically control the tree
 apiRef.current?.current?.focusItem?.('1');
@@ -114,7 +103,7 @@ apiRef.current?.current?.setItemSelection?.('1', true);
 ### User Interactions
 
 ```tsx
-<StudioTreeView
+<HandyTreeView
   items={items}
   onItemClick={(event, itemId) => console.log('Clicked:', itemId)}
   onItemDoubleClick={(event, itemId) => console.log('Double-clicked:', itemId)}
@@ -130,7 +119,7 @@ apiRef.current?.current?.setItemSelection?.('1', true);
 ### Visual Features
 
 ```tsx
-<StudioTreeView
+<HandyTreeView
   items={items}
   animateExpansion={true}
   isItemLoading={(itemId) => loadingItems.has(itemId)}
@@ -147,7 +136,7 @@ apiRef.current?.current?.setItemSelection?.('1', true);
 ### Accessibility
 
 ```tsx
-<StudioTreeView
+<HandyTreeView
   items={items}
   enableScreenReader={true}
   onScreenReaderAnnounce={(message) => console.log('Announcement:', message)}
@@ -159,7 +148,7 @@ apiRef.current?.current?.setItemSelection?.('1', true);
 ### Performance
 
 ```tsx
-<StudioTreeView
+<HandyTreeView
   items={largeItems}
   enableVirtualScrolling={true}
   viewportHeight={400}
@@ -170,7 +159,7 @@ apiRef.current?.current?.setItemSelection?.('1', true);
 ### Auto-expand on Navigation
 
 ```tsx
-<StudioTreeView
+<HandyTreeView
   items={items}
   autoExpandOnNavigation={true}
 />
@@ -187,7 +176,7 @@ When `autoExpandOnNavigation` is enabled, items with children will automatically
 | `items` | `TreeViewItem[]` | `[]` | Static tree items to display |
 | `dataSource` | `DataSource` | `undefined` | Data source for lazy loading |
 | `dataSourceCache` | `DataSourceCache` | `undefined` | Cache for data source |
-| `apiRef` | `StudioTreeViewApiRef` | `undefined` | API reference for programmatic control |
+| `apiRef` | `HandyTreeViewApiRef` | `undefined` | API reference for programmatic control |
 | `multiSelect` | `boolean` | `false` | Enable multi-selection |
 | `checkboxSelection` | `boolean` | `false` | Show checkboxes for selection |
 | `expandedItems` | `TreeViewItemId[]` | `undefined` | Controlled expanded items |
@@ -234,7 +223,7 @@ When `autoExpandOnNavigation` is enabled, items with children will automatically
 ### API Ref Methods
 
 ```typescript
-interface StudioTreeViewApiRef {
+interface HandyTreeViewApiRef {
   current?: {
     focusItem?: (itemId: TreeViewItemId) => void;
     getItem?: (itemId: TreeViewItemId) => TreeViewItem | null;
@@ -327,26 +316,10 @@ Interactive examples are available in Storybook:
 
 ## Testing
 
-Unit tests are available in `__tests__/StudioTreeView.test.tsx`. Run tests with:
+Unit tests are available in `__tests__/HandyTreeView.test.tsx`. Run tests with:
 
 ```bash
-npm test StudioTreeView
-```
-
-## Migration from RichTreeViewPro
-
-StudioTreeView maintains API compatibility with RichTreeViewPro, so migration is straightforward:
-
-```tsx
-// Before (RichTreeViewPro)
-import { RichTreeViewPro } from '@mui/x-tree-view-pro';
-
-<RichTreeViewPro items={items} multiSelect />
-
-// After (StudioTreeView)
-import { StudioTreeView } from '@olang-studio/ui';
-
-<StudioTreeView items={items} multiSelect />
+npm test HandyTreeView
 ```
 
 ## Performance
@@ -374,7 +347,7 @@ For very large trees (1000+ items), virtual scrolling can be enabled:
 
 2. **Use virtual scrolling** for large datasets:
    ```tsx
-   <StudioTreeView items={items} enableVirtualScrolling={true} />
+   <HandyTreeView items={items} enableVirtualScrolling={true} />
    ```
 
 3. **Memoize callbacks** passed as props:
@@ -382,9 +355,8 @@ For very large trees (1000+ items), virtual scrolling can be enabled:
    const handleClick = useCallback((e, id) => { ... }, [deps]);
    ```
 
-## RichTreeViewPlus Features
 
-StudioTreeView includes all RichTreeViewPlus exclusive features for complete compatibility:
+## Advanced Features
 
 ### Custom Filtering
 
@@ -396,7 +368,7 @@ const filterItems = (items: TreeViewItem[]): TreeViewItem[] => {
   return items.filter(item => /* your condition */);
 };
 
-<StudioTreeView items={items} filterItems={filterItems} />
+<HandyTreeView items={items} filterItems={filterItems} />
 ```
 
 ### Hidden Files Control
@@ -404,7 +376,7 @@ const filterItems = (items: TreeViewItem[]): TreeViewItem[] => {
 Control visibility of hidden files with the `showHiddenFiles` prop:
 
 ```tsx
-<StudioTreeView items={items} showHiddenFiles={false} />
+<HandyTreeView items={items} showHiddenFiles={false} />
 ```
 
 When `showHiddenFiles` is `false`, items with:
@@ -419,7 +391,7 @@ will be filtered out.
 Provide custom messages for different empty states:
 
 ```tsx
-<StudioTreeView
+<HandyTreeView
   items={items}
   emptyStateMessage="No items available in this tree."
   noItemsMatchMessage="No items match your search."
@@ -441,7 +413,7 @@ const MyComponent = () => {
   // Access all custom properties
   console.log(fullItem?.customProperty);
   
-  return <StudioTreeView items={items} />;
+  return <HandyTreeView items={items} />;
 };
 ```
 
@@ -450,7 +422,7 @@ const MyComponent = () => {
 The `onItemExpansion` callback is called when an item expands (different from `onItemExpansionToggle` which is called on both expand and collapse):
 
 ```tsx
-<StudioTreeView
+<HandyTreeView
   items={items}
   onItemExpansion={(itemId) => {
     console.log('Item expanded:', itemId);
@@ -464,8 +436,8 @@ The `initialRootPath` prop is available for dataSource implementations to use as
 
 ## Conclusion
 
-StudioTreeView provides a complete, feature-rich tree view component that matches both RichTreeViewPro and RichTreeViewPlus APIs while offering enhanced capabilities and full control over implementation.
+HandyTreeView provides a complete, feature-rich tree view component.
 
 ## License
 
-AGPL-3.0-or-later – see LICENSE in the repository root for full text
+MIT – see LICENSE in the repository root for full text

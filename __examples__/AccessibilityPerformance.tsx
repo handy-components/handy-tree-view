@@ -1,17 +1,16 @@
 /**
- * @fileoverview Accessibility and Performance Examples for StudioTreeView
+ * @fileoverview Accessibility and Performance Examples for HandyTreeView
  *
  * Demonstrates accessibility features and performance optimizations.
  *
  * @author Scott Davis
  * @version 1.0.0
- * @license AGPL-3.0-or-later – see LICENSE in the repository root for full text
+ * @license MIT
  */
 
 import React, { useState } from 'react';
 import { Box, Typography, Paper, Switch, FormControlLabel, Alert } from '@mui/material';
-import { StudioTreeView } from '../StudioTreeView';
-import { TreeViewItem } from '../../types';
+import { HandyTreeView, TreeViewItem } from '../src/components/HandyTreeView';
 
 /**
  * Example 1: Screen Reader Support
@@ -51,7 +50,7 @@ export const ScreenReaderSupport = () => {
       </Typography>
       <Box sx={{ display: 'flex', gap: 2 }}>
         <Box sx={{ flex: 1 }}>
-          <StudioTreeView
+          <HandyTreeView
             items={items}
             enableScreenReader={true}
             onScreenReaderAnnounce={handleAnnounce}
@@ -122,7 +121,7 @@ export const AriaAttributes = () => {
           </ul>
         </Typography>
       </Alert>
-      <StudioTreeView
+      <HandyTreeView
         items={items}
         multiSelect
         checkboxSelection
@@ -176,7 +175,7 @@ export const PerformanceLargeTree = () => {
         </Typography>
       </Box>
       <Box sx={{ height: 400, border: '1px solid', borderColor: 'divider', borderRadius: 1 }}>
-        <StudioTreeView
+        <HandyTreeView
           items={items}
           enableVirtualScrolling={enableVirtualScrolling}
           viewportHeight={400}
@@ -229,7 +228,7 @@ export const KeyboardNavigation = () => {
           </ul>
         </Typography>
       </Paper>
-      <StudioTreeView items={items} multiSelect checkboxSelection />
+      <HandyTreeView items={items} multiSelect checkboxSelection />
     </Box>
   );
 };
@@ -265,7 +264,7 @@ export const FocusManagement = () => {
         Use Tab to focus the tree view, then use arrow keys to navigate.
         Focus indicators will be visible.
       </Typography>
-      <StudioTreeView items={items} />
+      <HandyTreeView items={items} />
     </Box>
   );
 };
@@ -308,7 +307,7 @@ export const CombinedAccessibility = () => {
       </Typography>
       <Box sx={{ display: 'flex', gap: 2 }}>
         <Box sx={{ flex: 1 }}>
-          <StudioTreeView
+          <HandyTreeView
             items={items}
             multiSelect
             checkboxSelection

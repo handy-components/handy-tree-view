@@ -55,11 +55,11 @@
  *
  * @author Scott Davis
  * @version 1.0.0 – 2025-01-27
- * @license AGPL-3.0-or-later – see LICENSE in the repository root for full text
+ * @license MIT
  * @since 1.0.0
  */
 
-import { TreeViewItem, DataSource } from '../types';
+import { TreeViewItem, DataSource } from '../components/HandyTreeView/types';
 
 // ===================================================================
 // LAZY LOADING INTERFACES

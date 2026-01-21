@@ -1,19 +1,18 @@
 /**
- * @fileoverview Visual Features Examples for StudioTreeView
+ * @fileoverview Visual Features Examples for HandyTreeView
  *
  * Demonstrates visual features including animations, loading states,
  * error states, focus indicators, and custom icons.
  *
  * @author Scott Davis
  * @version 1.0.0
- * @license AGPL-3.0-or-later – see LICENSE in the repository root for full text
+ * @license MIT
  */
 
 import React, { useState } from 'react';
 import { Box, Typography, Paper, Button, IconButton } from '@mui/material';
 import { Folder, FolderOpen, InsertDriveFile, CloudDownload, Error as ErrorIcon } from '@mui/icons-material';
-import { StudioTreeView } from '../StudioTreeView';
-import { TreeViewItem } from '../../types';
+import { HandyTreeView, TreeViewItem } from '../src/components/HandyTreeView';
 
 /**
  * Example 1: Expand/Collapse Animations
@@ -46,7 +45,7 @@ export const ExpandCollapseAnimations = () => {
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
         Click items to see smooth expand/collapse animations
       </Typography>
-      <StudioTreeView items={items} animateExpansion={true} />
+      <HandyTreeView items={items} animateExpansion={true} />
     </Box>
   );
 };
@@ -97,7 +96,7 @@ export const LoadingStates = () => {
           Toggle Loading on "Loading Folder"
         </Button>
       </Box>
-      <StudioTreeView
+      <HandyTreeView
         items={items}
         isItemLoading={(itemId) => loadingItems.has(itemId as string)}
       />
@@ -152,7 +151,7 @@ export const ErrorStates = () => {
           Toggle Error on "Error Folder"
         </Button>
       </Box>
-      <StudioTreeView
+      <HandyTreeView
         items={items}
         getItemError={(itemId) => errorItems.get(itemId as string) || null}
       />
@@ -192,7 +191,7 @@ export const CustomIcons = () => {
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
         Custom icons for folders and files
       </Typography>
-      <StudioTreeView
+      <HandyTreeView
         items={items}
         getItemIcon={(item) => {
           if (item.type === 'directory') {
@@ -237,7 +236,7 @@ export const FocusIndicators = () => {
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
         Use Tab or Arrow keys to navigate and see focus indicators
       </Typography>
-      <StudioTreeView items={items} />
+      <HandyTreeView items={items} />
     </Box>
   );
 };
@@ -286,7 +285,7 @@ export const CombinedVisualFeatures = () => {
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
         Demonstrates loading states, error states, custom icons, and animations together
       </Typography>
-      <StudioTreeView
+      <HandyTreeView
         items={items}
         animateExpansion={true}
         isItemLoading={(itemId) => loadingItems.has(itemId as string)}

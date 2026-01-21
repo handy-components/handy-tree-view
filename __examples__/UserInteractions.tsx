@@ -1,18 +1,17 @@
 /**
- * @fileoverview User Interactions Examples for StudioTreeView
+ * @fileoverview User Interactions Examples for HandyTreeView
  *
  * Demonstrates user interaction patterns including clicks, double-clicks,
  * right-clicks, hover states, and context menus.
  *
  * @author Scott Davis
  * @version 1.0.0
- * @license AGPL-3.0-or-later – see LICENSE in the repository root for full text
+ * @license MIT
  */
 
 import React, { useState } from 'react';
 import { Box, Typography, Paper, Menu, MenuItem, Snackbar, Alert } from '@mui/material';
-import { StudioTreeView } from '../StudioTreeView';
-import { TreeViewItem } from '../../types';
+import { HandyTreeView, TreeViewItem } from '../src/components/HandyTreeView';
 
 /**
  * Example 1: Double-Click Handling
@@ -65,7 +64,7 @@ export const DoubleClickExample = () => {
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
         Double-click any item to see a notification
       </Typography>
-      <StudioTreeView
+      <HandyTreeView
         items={items}
         onItemDoubleClick={handleDoubleClick}
       />
@@ -141,7 +140,7 @@ export const ContextMenuExample = () => {
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
         Right-click any item to open a context menu
       </Typography>
-      <StudioTreeView
+      <HandyTreeView
         items={items}
         onItemContextMenu={handleContextMenu}
       />
@@ -217,7 +216,7 @@ export const HoverStatesExample = () => {
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
         Hover over items to see visual feedback. Current hovered item is shown below.
       </Typography>
-      <StudioTreeView
+      <HandyTreeView
         items={items}
         onItemHover={handleHover}
         onItemHoverEnd={handleHoverEnd}
@@ -270,7 +269,7 @@ export const CombinedInteractionsExample = () => {
       </Typography>
       <Box sx={{ display: 'flex', gap: 2 }}>
         <Box sx={{ flex: 1 }}>
-          <StudioTreeView
+          <HandyTreeView
             items={items}
             onItemClick={(e, id) => addLog(`Single-click: ${id}`)}
             onItemDoubleClick={(e, id) => addLog(`Double-click: ${id}`)}
@@ -363,7 +362,7 @@ export const FileSystemStyleExample = () => {
       </Typography>
       <Box sx={{ display: 'flex', gap: 2 }}>
         <Box sx={{ flex: 1 }}>
-          <StudioTreeView
+          <HandyTreeView
             items={items}
             selectedItems={selectedFile ? [selectedFile] : []}
             onItemClick={handleClick}

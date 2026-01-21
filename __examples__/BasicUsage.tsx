@@ -1,17 +1,16 @@
 /**
- * @fileoverview Basic Usage Examples for StudioTreeView
+ * @fileoverview Basic Usage Examples for HandyTreeView
  *
- * Demonstrates basic usage patterns for StudioTreeView component.
+ * Demonstrates basic usage patterns for HandyTreeView component.
  *
  * @author Scott Davis
  * @version 1.0.0
- * @license AGPL-3.0-or-later – see LICENSE in the repository root for full text
+ * @license MIT
  */
 
 import React, { useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
-import { StudioTreeView, StudioTreeViewApiRef } from '../StudioTreeView';
-import { TreeViewItem } from '../../types';
+import { HandyTreeView, HandyTreeViewApiRef, TreeViewItem } from '../src/components/HandyTreeView';
 
 /**
  * Example 1: Basic Static Tree
@@ -41,7 +40,7 @@ export const BasicStaticTree = () => {
       <Typography variant="h6" gutterBottom>
         Basic Static Tree
       </Typography>
-      <StudioTreeView items={items} />
+      <HandyTreeView items={items} />
     </Box>
   );
 };
@@ -76,7 +75,7 @@ export const ControlledExpansion = () => {
       <Typography variant="h6" gutterBottom>
         Controlled Expansion
       </Typography>
-      <StudioTreeView
+      <HandyTreeView
         items={items}
         expandedItems={expandedItems}
         onExpandedItemsChange={(event, itemIds) => {
@@ -122,7 +121,7 @@ export const MultiSelectionWithCheckboxes = () => {
       <Typography variant="h6" gutterBottom>
         Multi-Selection with Checkboxes
       </Typography>
-      <StudioTreeView
+      <HandyTreeView
         items={items}
         multiSelect
         checkboxSelection
@@ -144,7 +143,7 @@ export const MultiSelectionWithCheckboxes = () => {
  * Example 4: Using API Ref
  */
 export const UsingApiRef = () => {
-  const apiRef = React.useRef<StudioTreeViewApiRef>({ current: undefined });
+  const apiRef = React.useRef<HandyTreeViewApiRef>({ current: undefined });
 
   const items: TreeViewItem[] = [
     {
@@ -201,7 +200,7 @@ export const UsingApiRef = () => {
           Collapse All
         </Button>
       </Box>
-      <StudioTreeView items={items} apiRef={apiRef} />
+      <HandyTreeView items={items} apiRef={apiRef} />
     </Box>
   );
 };
@@ -236,7 +235,7 @@ export const CustomItemRendering = () => {
       <Typography variant="h6" gutterBottom>
         Custom Item Rendering (via getItemLabel)
       </Typography>
-      <StudioTreeView
+      <HandyTreeView
         items={items}
         getItemLabel={(item) => {
           const type = item.type === 'directory' ? '📁' : '📄';
@@ -275,7 +274,7 @@ export const DisabledItems = () => {
       <Typography variant="h6" gutterBottom>
         Disabled Items
       </Typography>
-      <StudioTreeView
+      <HandyTreeView
         items={items}
         isItemDisabled={(itemId) => itemId === '2'}
       />

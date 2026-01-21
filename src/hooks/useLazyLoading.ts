@@ -32,12 +32,12 @@
  *
  * @author Scott Davis
  * @version 1.0.0 – 2025-01-27
- * @license AGPL-3.0-or-later – see LICENSE in the repository root for full text
+ * @license MIT
  */
 
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { LazyLoadingDataSource, LazyLoadingConfig, LazyLoadingState } from '../data/LazyLoadingDataSource';
-import { DataSource } from '../types';
+import { DataSource } from '../components/HandyTreeView/types';
 
 // ===================================================================
 // LAZY LOADING HOOK INTERFACE
@@ -208,14 +208,8 @@ export function useLazyLoading(
    */
   const lazyLoadingDataSourceRef = useRef<LazyLoadingDataSource | undefined>(undefined);
   
-  // Initialize the LazyLoadingDataSource wrapper on first render
-  if (!lazyLoadingDataSourceRef.current) {
-    console.log('[useLazyLoading] Creating new LazyLoadingDataSource');
-    lazyLoadingDataSourceRef.current = new LazyLoadingDataSource(originalDataSource, config);
-  }
-
   /**
-   * Effect to recreate the LazyLoadingDataSource when dependencies change
+   * Effect to create/recreate the LazyLoadingDataSource when dependencies change
    * This ensures the wrapper always uses the latest data source and configuration
    */
   useEffect(() => {
@@ -223,11 +217,9 @@ export function useLazyLoading(
       hasRef: !!lazyLoadingDataSourceRef.current,
       configEnabled: config?.enabled
     });
-    if (lazyLoadingDataSourceRef.current) {
-      // Recreate the wrapper with the updated data source and configuration
-      console.log('[useLazyLoading] Recreating LazyLoadingDataSource');
-      lazyLoadingDataSourceRef.current = new LazyLoadingDataSource(originalDataSource, config);
-    }
+    // Always create/recreate the wrapper with the latest data source and configuration
+    console.log('[useLazyLoading] Creating/Recreating LazyLoadingDataSource');
+    lazyLoadingDataSourceRef.current = new LazyLoadingDataSource(originalDataSource, config);
   }, [originalDataSource, config]);
 
   // ===================================================================
@@ -261,6 +253,9 @@ export function useLazyLoading(
 
       const newState = lazyLoadingDataSourceRef.current.getLazyLoadingState();
 
+      // Guard against undefined state (e.g., when data source is mocked to return undefined)
+      if (!newState) return;
+
       // Performance optimization: only update state if something actually changed
       // This prevents cascading re-renders when the underlying state is stable
       setLazyLoadingState((prevState) => {
@@ -274,8 +269,10 @@ export function useLazyLoading(
       });
     };
 
-    // Perform initial synchronization immediately
-    updateState();
+    // Perform initial synchronization immediately (only if data source is available)
+    if (lazyLoadingDataSourceRef.current) {
+      updateState();
+    }
 
     /**
      * Set up polling interval for real-time state updates
@@ -357,7 +354,10 @@ export function useLazyLoading(
       // Clear all cached items in the data source
       lazyLoadingDataSourceRef.current.clearCache();
       // Immediately update local state to reflect the cleared cache
-      setLazyLoadingState(lazyLoadingDataSourceRef.current.getLazyLoadingState());
+      const newState = lazyLoadingDataSourceRef.current.getLazyLoadingState();
+      if (newState) {
+        setLazyLoadingState(newState);
+      }
     }
   }, []);
 
@@ -372,7 +372,10 @@ export function useLazyLoading(
       // Clear cache only for the specified parent
       lazyLoadingDataSourceRef.current.clearCacheForParent(parentId);
       // Update local state to reflect the partial cache clear
-      setLazyLoadingState(lazyLoadingDataSourceRef.current.getLazyLoadingState());
+      const newState = lazyLoadingDataSourceRef.current.getLazyLoadingState();
+      if (newState) {
+        setLazyLoadingState(newState);
+      }
     }
   }, []);
 
@@ -393,7 +396,10 @@ export function useLazyLoading(
       // Initiate background preloading
       await lazyLoadingDataSourceRef.current.preloadChildren(parentId);
       // Update state to reflect any newly loaded data
-      setLazyLoadingState(lazyLoadingDataSourceRef.current.getLazyLoadingState());
+      const newState = lazyLoadingDataSourceRef.current.getLazyLoadingState();
+      if (newState) {
+        setLazyLoadingState(newState);
+      }
     }
   }, []);
 
@@ -404,8 +410,11 @@ export function useLazyLoading(
    * @returns Object containing cache size, maximum size, and hit rate metrics
    */
   const getCacheStats = useCallback((): { size: number; maxSize: number; hitRate: number } => {
-    if (lazyLoadingDataSourceRef.current) {
-      return lazyLoadingDataSourceRef.current.getCacheStats();
+    if (lazyLoadingDataSourceRef.current && typeof lazyLoadingDataSourceRef.current.getCacheStats === 'function') {
+      const stats = lazyLoadingDataSourceRef.current.getCacheStats();
+      if (stats) {
+        return stats;
+      }
     }
     // Return safe defaults when data source is not available
     return { size: 0, maxSize: 0, hitRate: 0 };
@@ -432,7 +441,10 @@ export function useLazyLoading(
       await lazyLoadingDataSourceRef.current.getTreeItems({ parentId });
       
       // Step 3: Update local state to reflect the newly loaded data
-      setLazyLoadingState(lazyLoadingDataSourceRef.current.getLazyLoadingState());
+      const newState = lazyLoadingDataSourceRef.current.getLazyLoadingState();
+      if (newState) {
+        setLazyLoadingState(newState);
+      }
     }
   }, []);
 
@@ -452,7 +464,10 @@ export function useLazyLoading(
       await lazyLoadingDataSourceRef.current.getTreeItems({});
       
       // Step 3: Update local state to reflect the completely refreshed data
-      setLazyLoadingState(lazyLoadingDataSourceRef.current.getLazyLoadingState());
+      const newState = lazyLoadingDataSourceRef.current.getLazyLoadingState();
+      if (newState) {
+        setLazyLoadingState(newState);
+      }
     }
   }, []);
 
@@ -467,7 +482,7 @@ export function useLazyLoading(
    */
   return {
     // Core data source and state
-    lazyLoadingDataSource: lazyLoadingDataSourceRef.current!, // Non-null assertion safe due to initialization above
+    lazyLoadingDataSource: lazyLoadingDataSourceRef.current as LazyLoadingDataSource, // Type assertion for return type compatibility
     lazyLoadingState,                                          // Real-time synchronized state
     
     // State query functions (memoized for performance)
